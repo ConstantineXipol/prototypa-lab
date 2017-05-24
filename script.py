@@ -1,4 +1,5 @@
 from __future__ import print_function
+import sys
 from PIL import Image #python image library
 import numpy as np #numpy: scientific tools for python
 import matplotlib.pyplot as plt #plotting library for showing images
@@ -6,7 +7,8 @@ import matplotlib.pyplot as plt #plotting library for showing images
 # Π2014116 Ξυπολιτόπουλος Κωνσταντίνος - Για την εργαστηριακή bonus εργασία 'Αναγνώρισης Προτύπων' 2016-2017
 
 firstresults = []
-Threshold = 70 #δυαδικό κατόφλι, οτιδήποτε κάτω απο αυτό γίνεται 0 (μάυρο)
+Threshold = int(sys.argv[1]) #δυαδικό κατόφλι, οτιδήποτε κάτω απο αυτό γίνεται 0 (μάυρο), είναι το πρώτο argument στην κάλεση του προγράμματος
+t_Threshold = int(sys.argv[2]) #το συνολικό κατόφλι εικόνας για την κατάταξή της σε φωτεινή η σκοτεινή, είναι το δεύτερο argument
 folders = input("Δώσε το όνομα του φακέλου που περιέχει τις εικόνες, πρέπει να είναι στο working dir, και να περιέχει εικόνες με το φορμάτ <***>.jpg, όπου * αριθμός..")
 for i in range(1, 21):
     shadowcount = 0
@@ -26,7 +28,7 @@ for i in range(1, 21):
                 shadowcount = shadowcount +1
 
     print(shadowcount)
-    if shadowcount > 50000: firstresults.append(1) #αν έχει πολλά σκούρα σημεία, παίρνει μονάδα "1", δηλαδή είναι χαλασμένη
+    if shadowcount > t_Threshold: firstresults.append(1) #αν έχει πολλά σκούρα σημεία, παίρνει μονάδα "1", δηλαδή είναι χαλασμένη
     else: firstresults.append(0) #αν δεν έχει πολλά σκούρα σημεία, παίρνει "0", δηλαδή δεν έχει πρόβλημα
 
 
