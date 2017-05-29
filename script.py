@@ -8,7 +8,7 @@ import glob, os
 
 # Π2014116 Ξυπολιτόπουλος Κωνσταντίνος - Για την εργαστηριακή bonus εργασία 'Αναγνώρισης Προτύπων' 2016-2017 (3 βαθμοί bonus)
 
-
+counter = 0 # μετράει πλήθος απο εικόνες
 pixeldata = []
 firstresults = []
 Threshold = int(sys.argv[1]) #δυαδικό κατόφλι, οτιδήποτε κάτω απο αυτό γίνεται 0 (μάυρο), είναι το πρώτο argument στην κάλεση του προγράμματος
@@ -26,6 +26,7 @@ while True:
         print("Λάθος όνομα φακέλου, let's try that again..")
         folders = input()
 for file in glob.glob("*.jpg"):
+    counter = counter +1
     shadowcount = 0
     try:
         im = Image.open(file) #φορτώνει φωτογραφίες σε object "Image"
@@ -53,11 +54,11 @@ os.chdir("..") #πήγαινε πίσω στον αρχικό φάκελο γι�
 
 try:
     with open('result_data.csv', 'w') as file:
-        for es in range(1, 21):
-            s = "{},{},{}\n".format(es, pixeldata[es-1], firstresults[es-1])
+        for i in range(1, counter):
+            s = "{},{},{}\n".format(i, pixeldata[i], firstresults[i])
             file.write(s)
 except OSError:
     print("Πρόβλημα στο γράψιμο του αρχείου αναφοράς csv.. ίσως δεν έχεις δικαιώματα να γράψεις στον φάκελο?")
     sys.exit
-    
+
 print(firstresults)
