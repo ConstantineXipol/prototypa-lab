@@ -13,9 +13,18 @@ pixeldata = []
 firstresults = []
 Threshold = int(sys.argv[1]) #δυαδικό κατόφλι, οτιδήποτε κάτω απο αυτό γίνεται 0 (μάυρο), είναι το πρώτο argument στην κάλεση του προγράμματος
 t_Threshold = int(sys.argv[2]) #το συνολικό κατόφλι εικόνας για την κατάταξή της σε φωτεινή η σκοτεινή, είναι το δεύτερο argument
+if Threshold < 0 or Threshold > 255 or t_Threshold < 0 or t_Threshold > 250000:
+    print("Λάθος κατόφλι/α, reminder: 0-255 για το πρώτο argument, 0-250.000 για το δεύτερο..")
+    sys.exit
 
 folders = input("Δώσε το όνομα του φακέλου που περιέχει τις εικόνες, πρέπει να είναι στο working dir, και να περιέχει εικόνες .jpg\n")
-os.chdir(folders) #μπές μέσα στον φάκελο που δώθηκε
+while True:
+    try:
+        os.chdir(folders) #μπές μέσα στον φάκελο που δώθηκε
+        break
+    except OSError:
+        print("Λάθος όνομα φακέλου, let's try that again..")
+        folders = input()
 for file in glob.glob("*.jpg"):
     shadowcount = 0
     try:
@@ -41,9 +50,14 @@ for file in glob.glob("*.jpg"):
     else: firstresults.append(0) #αν δεν έχει πολλά σκούρα σημεία, παίρνει "0", δηλαδή δεν έχει πρόβλημα
 
 os.chdir("..") #πήγαινε πίσω στον αρχικό φάκελο για να γράψεις τα αποτελέσματα
-with open('result_data.csv', 'w') as file:
-    for es in range(1, 21):
-        s = "{},{},{}\n".format(es, pixeldata[es-1], firstresults[es-1])
-        file.write(s)
 
+try:
+    with open('result_data.csv', 'w') as file:
+        for es in range(1, 21):
+            s = "{},{},{}\n".format(es, pixeldata[es-1], firstresults[es-1])
+            file.write(s)
+except OSError:
+    print("Πρόβλημα στο γράψιμο του αρχείου αναφοράς csv.. ίσως δεν έχεις δικαιώματα να γράψεις στον φάκελο?")
+    sys.exit
+    
 print(firstresults)
