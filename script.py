@@ -2,6 +2,8 @@ from __future__ import print_function
 import sys
 from PIL import Image #python image library
 import numpy as np #numpy: επιστημονικά εργαλεία
+from numpy import pi, r_
+from scipy import optimize
 import matplotlib.pyplot as plt #για να δείχνουμε εικόνες/γραφήματα
 import csv
 import glob, os
@@ -45,6 +47,7 @@ for file in glob.glob("*.jpg"):
         for item in row:
             if item == 0:
                 shadowcount = shadowcount +1
+    shadowcount = (shadowcount//10000) * 10000 #πχ. 34501 πίξελ // 10000 = 3, 3 επί 10000 = 30,000
     pixeldata.append(shadowcount)
     print(shadowcount)
     if shadowcount > t_Threshold: firstresults.append(1) #αν έχει πολλά σκούρα σημεία, παίρνει μονάδα "1", δηλαδή είναι χαλασμένη
@@ -55,10 +58,40 @@ os.chdir("..") #πήγαινε πίσω στον αρχικό φάκελο γι�
 try:
     with open('result_data.csv', 'w') as file:
         for i in range(1, counter):
-            s = "{},{},{}\n".format(i, pixeldata[i], firstresults[i])
+            s = "{},{}\n".format(pixeldata[i], firstresults[i])
             file.write(s)
 except OSError:
     print("Πρόβλημα στο γράψιμο του αρχείου αναφοράς csv.. ίσως δεν έχεις δικαιώματα να γράψεις στον φάκελο?")
     sys.exit
+'''
+Tx = pixeldata
 
+#Fitting
+fitfunc = lambda p, x: p[0]*np.cos(2*np.pi/p[1]*x+p[2]) + p[3]*x # Target function
+errfunc = lambda p, x, y: fitfunc(p, x) - y # Distance to the target function
+p0 = [-15., 0.8, 0., -1.] # Initial guess for the parameters
+p1, success = optimize.leastsq(errfunc, p0[:], args=(Tx, tX))
+
+time = np.linspace(Tx.min(), Tx.max(), 100)
+plt.plot(Tx, tX, "ro", time, fitfunc(p1, time), "r-") # Plot of the data and the fit
+
+
+
+# Legend the plot
+plt.title("Oscillations in the compressed trap")
+plt.xlabel("time [ms]")
+plt.ylabel("displacement [um]")
+plt.legend(('x position', 'x fit'))
+
+ax = plt.axes()
+
+plt.text(0.8, 0.07,
+         'x freq :  %.3f kHz \n y freq :  %.3f kHz' % (1/p1[1],1/p2[1]),
+         fontsize=16,
+         horizontalalignment='center',
+         verticalalignment='center',
+         transform=ax.transAxes)
+
+plt.show() #εμφάνισε το γράφημα στην οθόνη
+'''
 print(firstresults)
