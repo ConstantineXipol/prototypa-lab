@@ -15,9 +15,9 @@ pixeldata = []
 firstresults = []
 freq = []
 Threshold = int(sys.argv[1]) #δυαδικό κατόφλι, οτιδήποτε κάτω απο αυτό γίνεται 0 (μάυρο), είναι το πρώτο argument στην κάλεση του προγράμματος
-t_Threshold = int(sys.argv[2]) #το συνολικό κατόφλι εικόνας για την κατάταξή της σε φωτεινή η σκοτεινή, είναι το δεύτερο argument
-if Threshold < 0 or Threshold > 255 or t_Threshold < 0 or t_Threshold > 250000:
-    print("Λάθος κατόφλι/α, reminder: 0-255 για το πρώτο argument, 0-250.000 για το δεύτερο..")
+#t_Threshold = int(sys.argv[2]) #το συνολικό κατόφλι εικόνας για την κατάταξή της σε φωτεινή η σκοτεινή, είναι το δεύτερο argument
+if Threshold < 0 or Threshold > 255: # or t_Threshold < 0 or t_Threshold > 250000:
+    print("Λάθος κατόφλι/α, reminder: 0-255 για το πρώτο argument")
     sys.exit
 
 folders = input("Δώσε το όνομα του φακέλου που περιέχει τις εικόνες, πρέπει να είναι στο working dir, και να περιέχει εικόνες .jpg\n")

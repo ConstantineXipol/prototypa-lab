@@ -8,10 +8,10 @@
 Το πρόγραμμα καλείται με την εντολή:
 
 ```
-$ python3 script.py <δυαδικό κατόφλι pixel (0-255)> <συνολικός αριθμός μαύρων pixel εικόνας (0-250.000)>
+$ python3 script.py <δυαδικό κατόφλι pixel (0-255)>
 ```
 
-Και σαν output δίνει ένα αρχείο results_data.csv (comma seperated value file) στο cwd (current working dir) με μορφή <σειριακός αριθμός>, <αριθμός μάυρων pixel>, <κατάταξη σε καλή(0) ή κακή(1)> με βάση πάντα τα ορισμένα κατόφλια που έδωσε ο χρήστης.
+Και σαν output δίνει ένα αρχείο results_data.csv (comma seperated value file) στο cwd (current working dir) με μορφή  <αριθμός μάυρων pixel>, <συχνότητα εμφάνισης>
 ___
 Ανάλογα με την έκδοση της python μπορεί να χρειαστεί να εγκαταστήσετε κάποια modules:
 
@@ -21,6 +21,7 @@ ___
 2. Matplotlib
 
 	```Debian / Ubuntu : $ sudo apt-get install python-matplotlib```
+
 	```Fedora / Redhat : $ sudo dnf install python-matplotlib```
 3. Numpy
 
