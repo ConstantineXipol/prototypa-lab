@@ -163,9 +163,9 @@ popt,pcov = curve_fit(Gauss, x, y, p0=[max(y), mean, sigma])
 popt2,pcov2 = curve_fit(Gauss, x2, y2, p0=[max(y2), mean2, sigma2])
 #κάνουμε plot τα πρώτα στοιχεία και fitting τις καμπύλες
 plt.plot(x, y,'b+',label='data')
-plt.plot(x, Gauss(x, *popt),'r-',label='fit')
+plt.plot(x, Gauss(x, *popt),'b-',label='fit')
 #κάνουμε plot τα δεύτερα στοιχεία και fitting τις καμπύλες
-plt.plot(x2, y2,'b+',label='second data')
+plt.plot(x2, y2,'r+',label='second data')
 plt.plot(x2, Gauss(x2, *popt2),'r-',label='second fit')
 
 plt.legend()
