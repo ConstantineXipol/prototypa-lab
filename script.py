@@ -56,50 +56,30 @@ for file in glob.glob("*.jpg"):
 
 #βρίσκει την συχνότητα εμφάνισης για κάθε αριθμό μαύρων πίξελ.
 for j in range(0, 26): # μέχρι 26 γιατί έχουμε αριθμό πίξελ 500χ500 = 250,000
+    freq.append(0)
     for i in range(0, counter): #counter: πόσες εικόνες έχουμε
-        freq.append(0)
         if pixeldata[i] == int("{:2d}0000".format(j)): # αν αριθμός πίξελ == **,000 αύξησε την συχνότητα κατα +1
             freq[j] = freq[j] + 1
 
 os.chdir("..") #πήγαινε πίσω στον αρχικό φάκελο για να γράψεις τα αποτελέσματα
-
+data = []
 try:
     with open('result_data.csv', 'w') as file: #άνοιγμα αρχείου σε write mode
         for i in range(0, 26):
             s = "{:2d}0000,{}\n".format(i, freq[i]) #τελικό output
             file.write(s)
+            data.append(int("{:2d}0000".format(i))) #χτίζουμε μια λίστα με τους αριθμούς πίξελ.
 except OSError:
     print("Πρόβλημα στο γράψιμο του αρχείου αναφοράς csv.. ίσως δεν έχεις δικαιώματα να γράψεις στον φάκελο?")
     sys.exit
-'''
-Tx = pixeldata
 
-#Fitting
-fitfunc = lambda p, x: p[0]*np.cos(2*np.pi/p[1]*x+p[2]) + p[3]*x # Target function
-errfunc = lambda p, x, y: fitfunc(p, x) - y # Distance to the target function
-p0 = [-15., 0.8, 0., -1.] # Initial guess for the parameters
-p1, success = optimize.leastsq(errfunc, p0[:], args=(Tx, tX))
+#print(len(data)) #DEBUGGING
+#print(len(freq))
+x = np.array(data) #περνάμε τους αριθμούς και συχνότητες εμφάνισης σε numpy arrays
+y = np.array(freq)
 
-time = np.linspace(Tx.min(), Tx.max(), 100)
-plt.plot(Tx, tX, "ro", time, fitfunc(p1, time), "r-") # Plot of the data and the fit
+print(x)
+print(y)
 
-
-
-# Legend the plot
-plt.title("Oscillations in the compressed trap")
-plt.xlabel("time [ms]")
-plt.ylabel("displacement [um]")
-plt.legend(('x position', 'x fit'))
-
-ax = plt.axes()
-
-plt.text(0.8, 0.07,
-         'x freq :  %.3f kHz \n y freq :  %.3f kHz' % (1/p1[1],1/p2[1]),
-         fontsize=16,
-         horizontalalignment='center',
-         verticalalignment='center',
-         transform=ax.transAxes)
-
+plt.scatter(x, y)
 plt.show() #εμφάνισε το γράφημα στην οθόνη
-'''
-print(firstresults)
