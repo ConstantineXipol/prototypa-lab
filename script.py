@@ -8,11 +8,12 @@ import matplotlib.pyplot as plt #για να δείχνουμε εικόνες/�
 import csv
 import glob, os
 
-# Π2014116 Ξυπολιτόπουλος Κωνσταντίνος - Για την εργαστηριακή bonus εργασία 'Αναγνώρισης Προτύπων' 2016-2017 (3 βαθμοί bonus)
+# Π2014116 Ξυπολιτόπουλος Κωνσταντίνος - Για την εργαστηριακή bonus εργασία 'Αναγνώρισης Προτύπων' 2016-2017 (10 βαθμοί bonus)
 
 counter = 0 # μετράει πλήθος απο εικόνες
 pixeldata = []
 firstresults = []
+freq = []
 Threshold = int(sys.argv[1]) #δυαδικό κατόφλι, οτιδήποτε κάτω απο αυτό γίνεται 0 (μάυρο), είναι το πρώτο argument στην κάλεση του προγράμματος
 t_Threshold = int(sys.argv[2]) #το συνολικό κατόφλι εικόνας για την κατάταξή της σε φωτεινή η σκοτεινή, είναι το δεύτερο argument
 if Threshold < 0 or Threshold > 255 or t_Threshold < 0 or t_Threshold > 250000:
@@ -50,15 +51,22 @@ for file in glob.glob("*.jpg"):
     shadowcount = (shadowcount//10000) * 10000 #πχ. 34501 πίξελ // 10000 = 3, 3 επί 10000 = 30,000
     pixeldata.append(shadowcount)
     print(shadowcount)
-    if shadowcount > t_Threshold: firstresults.append(1) #αν έχει πολλά σκούρα σημεία, παίρνει μονάδα "1", δηλαδή είναι χαλασμένη
-    else: firstresults.append(0) #αν δεν έχει πολλά σκούρα σημεία, παίρνει "0", δηλαδή δεν έχει πρόβλημα
+    #if shadowcount > t_Threshold: firstresults.append(1) #αν έχει πολλά σκούρα σημεία, παίρνει μονάδα "1", δηλαδή είναι χαλασμένη
+    #else: firstresults.append(0) #αν δεν έχει πολλά σκούρα σημεία, παίρνει "0", δηλαδή δεν έχει πρόβλημα
+
+#βρίσκει την συχνότητα εμφάνισης για κάθε αριθμό μαύρων πίξελ.
+for j in range(0, 26): # μέχρι 26 γιατί έχουμε αριθμό πίξελ 500χ500 = 250,000
+    for i in range(0, counter): #counter: πόσες εικόνες έχουμε
+        freq.append(0)
+        if pixeldata[i] == int("{:2d}0000".format(j)): # αν αριθμός πίξελ == **,000 αύξησε την συχνότητα κατα +1
+            freq[j] = freq[j] + 1
 
 os.chdir("..") #πήγαινε πίσω στον αρχικό φάκελο για να γράψεις τα αποτελέσματα
 
 try:
-    with open('result_data.csv', 'w') as file:
-        for i in range(1, counter):
-            s = "{},{}\n".format(pixeldata[i], firstresults[i])
+    with open('result_data.csv', 'w') as file: #άνοιγμα αρχείου σε write mode
+        for i in range(0, 26):
+            s = "{:2d}0000,{}\n".format(i, freq[i]) #τελικό output
             file.write(s)
 except OSError:
     print("Πρόβλημα στο γράψιμο του αρχείου αναφοράς csv.. ίσως δεν έχεις δικαιώματα να γράψεις στον φάκελο?")
