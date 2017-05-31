@@ -6,9 +6,9 @@ from numpy import pi, r_
 from scipy import optimize
 import matplotlib.pyplot as plt #για να δείχνουμε εικόνες/γραφήματα
 import csv
-import glob, os
+import glob, os #parsing φακέλων
 from statistics import mean
-from matplotlib import style
+from matplotlib import style #διάφορα στύλ για τα plot του matplotlib
 
 # Π2014116 Ξυπολιτόπουλος Κωνσταντίνος - Για την εργαστηριακή bonus εργασία 'Αναγνώρισης Προτύπων' 2016-2017 (10 βαθμοί bonus)
 
@@ -84,17 +84,17 @@ y = np.array(freq)
 print(x)
 print(y)
 
-#regresion lines
+#regresion γραμμές
 def best_fit(x, y):
-    m = ( (mean(x) * mean(y)) - mean(x*y) )  /  (( mean(x) **2) - ( mean(x**2) ))
-    b = mean(y) - m*mean(x)
+    m = ( (mean(x) * mean(y)) - mean(x*y) )  /  (( mean(x) **2) - ( mean(x**2) )) #η εξίσωση regression γραμμής
+    b = mean(y) - m*mean(x) #σημείο τομής γραμμής
     return m, b
 
 
 m, b = best_fit(x, y)
-regression_line = [ (m*xs)+b for xs in x]
+regression_line = [ (m*xs)+b for xs in x ] 
 print(m, b)
 
-plt.scatter(x, y)
+plt.scatter(x, y) #γράφημα scatterplot
 plt.plot(x, regression_line)
 plt.show() #εμφάνισε το γράφημα στην οθόνη
