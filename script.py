@@ -7,9 +7,12 @@ from scipy import optimize
 import matplotlib.pyplot as plt #για να δείχνουμε εικόνες/γραφήματα
 import csv
 import glob, os
+from statistics import mean
+from matplotlib import style
 
 # Π2014116 Ξυπολιτόπουλος Κωνσταντίνος - Για την εργαστηριακή bonus εργασία 'Αναγνώρισης Προτύπων' 2016-2017 (10 βαθμοί bonus)
 
+style.use('fivethirtyeight')
 counter = 0 # μετράει πλήθος απο εικόνες
 pixeldata = []
 firstresults = []
@@ -81,5 +84,17 @@ y = np.array(freq)
 print(x)
 print(y)
 
+#regresion lines
+def best_fit(x, y):
+    m = ( (mean(x) * mean(y)) - mean(x*y) )  /  (( mean(x) **2) - ( mean(x**2) ))
+    b = mean(y) - m*mean(x)
+    return m, b
+
+
+m, b = best_fit(x, y)
+regression_line = [ (m*xs)+b for xs in x]
+print(m, b)
+
 plt.scatter(x, y)
+plt.plot(x, regression_line)
 plt.show() #εμφάνισε το γράφημα στην οθόνη
