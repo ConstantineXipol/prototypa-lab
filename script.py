@@ -9,6 +9,8 @@ import csv
 import glob, os #parsing φακέλων
 from statistics import mean
 from matplotlib import style #διάφορα στύλ για τα plot του matplotlib
+from scipy.optimize import curve_fit
+from scipy import asarray as ar,exp
 
 # Π2014116 Ξυπολιτόπουλος Κωνσταντίνος - Για την εργαστηριακή bonus εργασία 'Αναγνώρισης Προτύπων' 2016-2017 (10 βαθμοί bonus)
 
@@ -80,21 +82,36 @@ except OSError:
 #print(len(freq))
 x = np.array(data) #περνάμε τους αριθμούς και συχνότητες εμφάνισης σε numpy arrays
 y = np.array(freq)
-
-print(x)
-print(y)
-
 #regresion γραμμές
+
 def best_fit(x, y):
     m = ( (mean(x) * mean(y)) - mean(x*y) )  /  (( mean(x) **2) - ( mean(x**2) )) #η εξίσωση regression γραμμής
     b = mean(y) - m*mean(x) #σημείο τομής γραμμής
     return m, b
 
-
 m, b = best_fit(x, y)
-regression_line = [ (m*xs)+b for xs in x ] 
+regression_line = [ (m*xs)+b for xs in x ]
 print(m, b)
-
 plt.scatter(x, y) #γράφημα scatterplot
 plt.plot(x, regression_line)
 plt.show() #εμφάνισε το γράφημα στην οθόνη
+
+
+
+
+#weighted arithmetic mean
+mean = sum(x * y) / sum(y)
+sigma = np.sqrt(sum(y * (x - mean)**2) / sum(y))
+
+def Gauss(x, a, x0, sigma):
+    return a * np.exp(-(x - x0)**2 / (2 * sigma**2))
+
+popt,pcov = curve_fit(Gauss, x, y, p0=[max(y), mean, sigma])
+
+plt.plot(x, y,'b+:',label='data')
+plt.plot(x, Gauss(x, *popt),'r-',label='fit')
+plt.legend()
+plt.title('Fitting Γκαουσιανής καμπύλης')
+plt.xlabel('Αριθμός Μαύρων Pixel')
+plt.ylabel('Συχνότητα εμφάνισης')
+plt.show()
