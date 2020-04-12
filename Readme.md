@@ -1,6 +1,5 @@
 # Αναγνώριση Προτύπων 2016-2017
-### Ξυπολιτόπουλος Κωνσταντίνος Π2014116
-![Pillow](https://pbs.twimg.com/profile_images/510760404411109380/wDGjWJxk.png "Pillow")
+### Ξυπολιτόπουλος Κωνσταντίνος
 
 Το πρόγραμμα καλείται με την εντολή:
 
@@ -31,14 +30,3 @@ ___
 
 [WinPython](http://winpython.github.io/) - Windows μόνο
 
-
-
-Ενδεικτικές Εικόνες (προόδου):
-
-![1](http://i.imgur.com/zmZo26b.png)
-
-![2](http://i.imgur.com/HoxnZcD.png?1)
-
-![3](http://i.imgur.com/YPLoIFS.png)
-
-![4](http://i.imgur.com/2LAoUI6.png)
